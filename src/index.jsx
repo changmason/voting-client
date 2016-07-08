@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router';
 import {createStore} from 'redux';
+import {Provider} from 'react-redux';
 import reducer from './reducer';
 import App from './components/App.jsx';
-import Voting from './components/Voting.jsx';
-import Results from './components/Results.jsx';
+import {VotingContainer} from './components/Voting.jsx';
+import {ResultsContainer} from './components/Results.jsx';
 
 const store = createStore(reducer);
 store.dispatch({
@@ -19,11 +20,13 @@ store.dispatch({
 });
 
 const routes = <Route component={App}>
-  <Route path="/" component={Voting} />
-  <Route path="/results" component={Results} />
+  <Route path="/results" component={ResultsContainer} />
+  <Route path="/" component={VotingContainer} />
 </Route>;
 
 ReactDOM.render(
-  <Router history={hashHistory}>{routes}</Router>,
+  <Provider store={store}>
+    <Router history={hashHistory}>{routes}</Router>
+  </Provider>,
   document.getElementById('app')
 );
